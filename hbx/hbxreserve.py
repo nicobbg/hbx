@@ -1,7 +1,11 @@
-"""boxing_logger."""
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+"""hbxreserve module."""
 from time import sleep
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class HbxReserve(object):
@@ -28,18 +32,14 @@ class HbxReserve(object):
         user_password_elem.send_keys(self.user_password)
         user_password_elem.send_keys(Keys.ENTER)
 
+    def go_to_reserve(self):
+        """Go the reservation menu."""
+        button_reserve = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "button-1032"))
+        )
+        sleep(5)
+        ActionChains(self.driver).move_to_element(button_reserve).click().perform()
+
     def logout(self):
         """Session logout."""
         self.driver.close()
-
-
-def main():
-    """Just a test."""
-    session = HbxReserve('test@gmail.com', 'xxxxxxxxx',
-                         'http://www.logirider.fr/formstationrennes/')
-    session.connect()
-    session.login()
-
-
-if __name__ == '__main__':
-    main()
