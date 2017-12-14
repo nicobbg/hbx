@@ -1,10 +1,13 @@
 """command line module."""
+import logging
 from argparse import ArgumentParser
 from hbxreserve import HbxReserve
 
 
 def main():
     """Just a test."""
+    logging.basicConfig(level=logging.DEBUG)
+
     parser = ArgumentParser(prog="hbxreserve",
                             usage="hbxreserve -l username -p password",
                             description="reserve an hbx boxing session")
@@ -14,9 +17,12 @@ def main():
 
     session = HbxReserve(args.user_login, args.user_password,
                          'http://www.logirider.fr/formstationrennes/')
+    logging.info("Connecting to Logirider")
     session.connect()
     session.login()
+    logging.info("Starting reservation")
     session.go_to_reserve()
+    session.go_to_day(17)
 
 
 if __name__ == '__main__':
